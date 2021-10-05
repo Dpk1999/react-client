@@ -1,0 +1,44 @@
+ul {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+    margin-left: 80px;
+  }
+  ul li {
+    border: 1px solid #ddd;
+    margin-top: -1px; 
+    background-color: white;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    display: block;
+    position: relative;
+    box-shadow:5px 5px 5px gray;
+  }
+  .block{
+    cursor: pointer;
+    position: absolute;
+    background-color: rgb(238, 236, 236);
+    color: black;
+    top: 50%;
+    right: 0%;
+    left: 60%;
+    padding: 15px 20px;
+    transform: translate(0%, -50%);
+  }
+  .payment{
+    cursor: pointer;
+    position: absolute;
+    background-color: white;
+    color: black;
+    top: 70%;
+    right: 50%;
+    left: 20%;
+    transform: translate(0%, -50%);
+  }
+  .fa.fa-window-close{
+      padding-left: 830px;
+      transform: translate(0%,-90%);
+      font-size: 20px;
+  }
