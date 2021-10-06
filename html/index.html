@@ -2,8 +2,9 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 </head>
 
 <body>
@@ -22,15 +23,139 @@
             </div>
         </div>
         <hr class="hr" />
-        <div class="checkout__down">
-            <p class="checkout__paymentBlock">
-                Payment Block
-            </p>
-            <p class="checkout__cartBlock">
-                Cart Block
-            </p>
+        <div class="main">
+            <div class="main__left">
+                <div class="left__top">
+                    <p class="wallet">Wallet </p>
+                    <hr class="hr" />
+                    <div class="left__walletCards">
+                        <div class="walletCards__image">
+                            <img class="walletCards__images" src="./css/images/cards/discover.png" alt="discover" />
+                            <p class="walletCards_para">Ending With 8999</p>
+                        </div>
+                        <div class="walletCards__image img--active">
+                            <img class=" walletCards__images" src="./css/images/cards/mastercard.png" alt="mastercard" />
+                            <p class="walletCards_para">Ending With 8999</p>
+                        </div>
+                        <div class="walletCards__image">
+                            <img class="walletCards__images" src="./css/images/cards/visa.png" alt="visa" />
+                            <p class="walletCards_para">Ending With 8999</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="left__bottom">
+                    <p class="wallet">New Card </p>
+                    <hr class="hr" />
+                    <div class="left__bottomForm">
+                        <form class="form">
+                            <input class="form__input" type="text" id="cardName" name="Card Name" placeholder="Name on Card">
+                            <input class="form__input" type="text" id="cardNo" name="Card No" placeholder="XXXX-XXXX-XXXX-XXXX">
+                            <div class="formInput__50">
+                                <input class="form__input form__margin form__50" type="text" id="mmyy" name="Month Year" placeholder="MM/YY">
+                                <input class="form__input form__50" type="text" id="cvv" name="cvv" placeholder="CVV">
+                            </div>
+
+                            <input class="form__input button--success" type="continue" value="continue">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="main__right">
+                <div class="product">
+                    <div class="product__image">
+                        <img height="50px" width="50px" src="./css/images/products/mobile-holder.jpg">
+                    </div>
+                    <div class="product__info">
+                        <h1 class="product__heading">Mobile Holder </h1>
+                        <p class="product__paragraph">Black</p>
+                        <p class="product__paragraph">Quantity:1</p>
+                    </div>
+                    <div class="product__price">
+                        <div><span class="product__price">
+                            $10.00
+                        </span></div>
+                    </div>
+                </div>
+                <hr class="hr">
+                <div class="product">
+                    <div class="product__image">
+                        <img height="50px" width="50px" src="./css/images/products/rado.jpg">
+                    </div>
+                    <div class="product__info">
+                        <h1 class="product__heading">Rado Watch </h1>
+                        <p class="product__paragraph">Black</p>
+                        <p class="product__paragraph">Quantity:1</p>
+                    </div>
+                    <div class="product__price">
+                        <div><span class="product__price">
+                            $10.00
+                        </span></div>
+                    </div>
+                </div>
+                <hr class="hr">
+                <div class="product">
+                    <div class="product__image">
+                        <img height="50px" width="50px" src="./css/images/products/usb-c-2-micro.jpeg">
+                    </div>
+                    <div class="product__info">
+                        <h1 class="product__heading">C Type Micro Convertor </h1>
+                        <p class="product__paragraph">Black</p>
+                        <p class="product__paragraph">Quantity:1</p>
+                    </div>
+                    <div class="product__price">
+                        <div><span class="product__price"> 
+                            $10.00
+                        </span></div>
+                    </div>
+                </div>
+                <hr class="hr">
+                <div class="product padding">
+                    <div class="product__image">
+                        <img height="50px" width="50px" src="./css/images/products/hard-case.jpg">
+                    </div>
+                    <div class="product__info">
+                        <h1 class="product__heading">Mobile Case </h1>
+                        <p class="product__paragraph">Black</p>
+                        <p class="product__paragraph">Quantity:1</p>
+                    </div>
+                    <div class="product__price">
+                        <div><span class="product__price">
+                            $10.00
+                        </span></div>
+                    </div>
+                </div>
+                <hr class="hr" />
+                <div class="price">
+                    <div>
+                        <div class="price__subTotal">
+                            <span class="">Sub Total</span>
+                        </div>
+                        <div>
+                            <span class="shipping_price">$ 100.00</span>
+                        </div>
+                    </div>
+
+                    <div class="price__shipping">
+                        <div><span class="shipping_price" >Shipping</span></div>
+                        <div><span class="shipping_price">$ 10.00</span></div>
+                    </div>
+                    <div class="price__taxes">
+                        <div><span class="shipping_price">Taxes</span></div>
+                        <div><span class="taxe-price">$ 5.00</span></div>
+                    </div>
+                    <hr class="hr" />
+                    <div class="price__total">
+                        <div><span>Total</span></div>
+                        <div><span>$ 115.00</span></div>
+                    </div>
+
+                </div>
+            </div>
+
+
         </div>
-    </div>
 </body>
 
 </html>
