@@ -1,26 +1,32 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { getRandomNumber } from '../../lib/utils/math';
+import { MAX_NUMBER } from '../../configs/Constant';
+import { getNextRoundRobin, getRandomNumber } from '../../lib/utils/math';
 import { sliderContainer } from './style';
 
 const Slider = (props) => {
   const {
-    altText, banners, height, duration, random,
+    altText, banners, height, duration, random, defaultBanner,
   } = props;
 
-  const [state, setState] = useState(0);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setState(getRandomNumber(random));
-    }, duration);
+      if (random) {
+        setIndex(getRandomNumber(MAX_NUMBER));
+      } else {
+        setIndex((i) => getNextRoundRobin(MAX_NUMBER, i));
+      }
+    },
+    duration);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
       <div style={sliderContainer}>
-        <img src={banners[state]} alt={altText} height={height} />
+        <img src={banners[index] ? banners[index] : defaultBanner} alt={altText} height={height} />
       </div>
     </>
   );
@@ -32,6 +38,7 @@ Slider.propTypes = {
   height: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
   random: PropTypes.number.isRequired,
+  defaultBanner: PropTypes.string.isRequired,
 };
 
 export default Slider;
