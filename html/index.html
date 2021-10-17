@@ -1,162 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Enteries</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://kit.fontawesome.com/2d8087be1e.js" crossorigin="anonymous"></script>
 
 </head>
 
 <body>
-    <div class="checkout">
-        <div class="checkout__top">
-            <h1 class="checkout__heading">
-                Checkout
-            </h1>
-            <div class="checkout__badges">
-                <p>Shipping </p>
-                <p class="checkout__badges--active">Payment Method </p>
-                <p>Confirmation </p>
-            </div>
-            <div class="checkout__close">
-                <i class="fa fa-window-close"></i>
-            </div>
-        </div>
-        <hr class="hr" />
-        <div class="main">
-            <div class="main__left">
-                <div class="left__top">
-                    <p class="wallet">Wallet </p>
-                    <hr class="hr" />
-                    <div class="left__walletCards">
-                        <div class="walletCards__image">
-                            <img class="walletCards__images" src="./css/images/cards/discover.png" alt="discover" />
-                            <p class="walletCards_para">Ending With 8999</p>
-                        </div>
-                        <div class="walletCards__image img--active">
-                            <img class=" walletCards__images" src="./css/images/cards/mastercard.png" alt="mastercard" />
-                            <p class="walletCards_para">Ending With 8999</p>
-                        </div>
-                        <div class="walletCards__image">
-                            <img class="walletCards__images" src="./css/images/cards/visa.png" alt="visa" />
-                            <p class="walletCards_para">Ending With 8999</p>
-                        </div>
-
-                    </div>
+    <div class="container">
+        <div class="payment">
+            <!-- Main bar -->
+            <div class="payment__method">
+                <h1 class="payment_method_title">Checkout</h1>
+                <div class="payment_method_data">
+                    <ul class="payment_methoddata_items">
+                        <li class="data_items_li">Shipping</li>
+                        <li class="data_items_li">Payment Method</li>
+                        <li>Confirmation</li>
+                    </ul>
                 </div>
-                <div class="left__bottom">
-                    <p class="wallet">New Card </p>
-                    <hr class="hr" />
-                    <div class="left__bottomForm">
-                        <form class="form">
-                            <input class="form__input" type="text" id="cardName" name="Card Name" placeholder="Name on Card">
-                            <input class="form__input" type="text" id="cardNo" name="Card No" placeholder="XXXX-XXXX-XXXX-XXXX">
-                            <div class="formInput__50">
-                                <input class="form__input form__margin form__50" type="text" id="mmyy" name="Month Year" placeholder="MM/YY">
-                                <input class="form__input form__50" type="text" id="cvv" name="cvv" placeholder="CVV">
-                            </div>
+                <i class="fas fa-window-close payment__method--button"></i>
+            </div>
+            <!-- Payment & Cart section -->
+            <div class="payment__detail">
+                <!-- Payment Detail -->
+                <div class="payment_detail_payment">
 
-                            <input class="form__input button--success" type="continue" value="continue">
+                    <h3 class="payment_detailpayment_head">Wallet</h3>
+                    <!-- Available cards  -->
+                    <div class="payment_detailpayment_allCards">
+                        <div class="payment_detailpaymentallCards_eachcard">
+                            <img src="./css/images/cards/discover.png" alt="Discover Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                        <div class="payment_detailpaymentallCards_eachcard">
+                            <img src="./css/images/cards/mastercard.png" alt="Master Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                        <div class="payment_detailpaymentallCards_eachcard">
+                            <img src="./css/images/cards/visa.png" alt="Visa Card">
+                            <small>Ending with 8899</small>
+                        </div>
+                    </div>
+                    <h3 class="payment_detailpayment_head">New Card</h3>
+                    <!-- New Card Input/Form defining -->
+                    <div class="payment_detailpayment_form">
+                        <form class="card__details">
+                            <input class="card_details_input" type="text" name="" placeholder="Name on Card" id="">
+                            <input class="card_details_input" type="text" name="" placeholder="XXXX-XXXX-XXXX-XXXX"
+                                id="">
+                            <div class="expiryCvv">
+                                <input type="text" name="" placeholder="MM/YY" id="">
+                                <input type="text" name="" placeholder="CVV" id="">
+                            </div>
+                            <input class="card_details_input input--continue" type="button" value="CONTINUE"
+                                placeholder="" id="">
                         </form>
                     </div>
+                </div>
 
-                </div>
-            </div>
-            <div class="main__right">
-                <div class="product">
-                    <div class="product__image">
-                        <img height="50px" width="50px" src="./css/images/products/mobile-holder.jpg">
-                    </div>
-                    <div class="product__info">
-                        <h1 class="product__heading">Mobile Holder </h1>
-                        <p class="product__paragraph">Black</p>
-                        <p class="product__paragraph">Quantity:1</p>
-                    </div>
-                    <div class="product__price">
-                        <div><span class="product__price">
-                            $10.00
-                        </span></div>
-                    </div>
-                </div>
-                <hr class="hr">
-                <div class="product">
-                    <div class="product__image">
-                        <img height="50px" width="50px" src="./css/images/products/rado.jpg">
-                    </div>
-                    <div class="product__info">
-                        <h1 class="product__heading">Rado Watch </h1>
-                        <p class="product__paragraph">Black</p>
-                        <p class="product__paragraph">Quantity:1</p>
-                    </div>
-                    <div class="product__price">
-                        <div><span class="product__price">
-                            $10.00
-                        </span></div>
-                    </div>
-                </div>
-                <hr class="hr">
-                <div class="product">
-                    <div class="product__image">
-                        <img height="50px" width="50px" src="./css/images/products/usb-c-2-micro.jpeg">
-                    </div>
-                    <div class="product__info">
-                        <h1 class="product__heading">C Type Micro Convertor </h1>
-                        <p class="product__paragraph">Black</p>
-                        <p class="product__paragraph">Quantity:1</p>
-                    </div>
-                    <div class="product__price">
-                        <div><span class="product__price"> 
-                            $10.00
-                        </span></div>
-                    </div>
-                </div>
-                <hr class="hr">
-                <div class="product padding">
-                    <div class="product__image">
-                        <img height="50px" width="50px" src="./css/images/products/hard-case.jpg">
-                    </div>
-                    <div class="product__info">
-                        <h1 class="product__heading">Mobile Case </h1>
-                        <p class="product__paragraph">Black</p>
-                        <p class="product__paragraph">Quantity:1</p>
-                    </div>
-                    <div class="product__price">
-                        <div><span class="product__price">
-                            $10.00
-                        </span></div>
-                    </div>
-                </div>
-                <hr class="hr" />
-                <div class="price">
-                    <div>
-                        <div class="price__subTotal">
-                            <span class="">Sub Total</span>
+                <!-- Cart Block -->
+                <div class="payment_detail_cart">
+                    <!-- item 1 -->
+                    <div class="orderPlaced">
+                        <div class="orderPlaced__imgDiv">
+                            <img src="./css/images/products/mobile-holder.jpg" alt="mobile holder">
                         </div>
-                        <div>
-                            <span class="shipping_price">$ 100.00</span>
+                        <div class="orderPlaced__detail">
+                            <div class="orderPlaced_detail_name">
+                                <h1>Mobile Holder</h1>
+                                <small>Black</small>
+                                <h2>Quantity: <span>1</span></h2>
+                            </div>
+                            <h2 class="orderPlaced_detail_unitPrice">$ 10.00</h2>
                         </div>
                     </div>
-
-                    <div class="price__shipping">
-                        <div><span class="shipping_price" >Shipping</span></div>
-                        <div><span class="shipping_price">$ 10.00</span></div>
+                    <!-- item 2 -->
+                    <div class="orderPlaced">
+                        <div class="orderPlaced__imgDiv">
+                            <img src="./css/images/products/rado.jpg" alt="mobile holder">
+                        </div>
+                        <div class="orderPlaced__detail">
+                            <div class="orderPlaced_detail_name">
+                                <h1>Rado Watch</h1>
+                                <small>Black</small>
+                                <h2>Quantity: <span>1</span></h2>
+                            </div>
+                            <h2 class="orderPlaced_detail_unitPrice">$ 10.00</h2>
+                        </div>
                     </div>
-                    <div class="price__taxes">
-                        <div><span class="shipping_price">Taxes</span></div>
-                        <div><span class="taxe-price">$ 5.00</span></div>
+                    <!-- item 3 -->
+                    <div class="orderPlaced">
+                        <div class="orderPlaced__imgDiv">
+                            <img src="./css/images/products/usb-c-2-micro.jpeg" alt="mobile holder">
+                        </div>
+                        <div class="orderPlaced__detail">
+                            <div class="orderPlaced_detail_name">
+                                <h1>C type to Micro Converter</h1>
+                                <small>Black</small>
+                                <h2>Quantity: <span>1</span></h2>
+                            </div>
+                            <h2 class="orderPlaced_detail_unitPrice">$ 10.00</h2>
+                        </div>
                     </div>
-                    <hr class="hr" />
-                    <div class="price__total">
-                        <div><span>Total</span></div>
-                        <div><span>$ 115.00</span></div>
+                    <!-- item 4 -->
+                    <div class="orderPlaced --last">
+                        <div class="orderPlaced__imgDiv">
+                            <img src="./css/images/products/hard-case.jpg" alt="mobile holder">
+                        </div>
+                        <div class="orderPlaced__detail">
+                            <div class="orderPlaced_detail_name">
+                                <h1>Mobile Case</h1>
+                                <small>Black</small>
+                                <h2>Quantity: <span>1</span></h2>
+                            </div>
+                            <h2 class="orderPlaced_detail_unitPrice">$ 10.00</h2>
+                        </div>
                     </div>
-
+                    <!-- Amount to be pay -->
+                    <div class="totalAmount">
+                        <div class="totalAmount__amount"><span>Sub Total</span><span>$ 100.00</span></div>
+                        <div class="totalAmount__amount"><span>Shipping</span><span>$ 10.00</span></div>
+                        <div class="totalAmount__amount"><span>Taxes</span><span>$ 5.00</span></div>
+                        <div class="totalAmount__amount --total"><span>Total</span><span>$ 115.00</span></div>
+                    </div>
                 </div>
             </div>
-
-
         </div>
+    </div>
 </body>
 
 </html>
