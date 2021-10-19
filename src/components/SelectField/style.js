@@ -3,5 +3,5 @@ export const selectInput = {
   width: '100%',
 };
 export const selectOption = {
-  'background-color': '',
+  backgroundColor: '',
 };

@@ -1,5 +1,5 @@
 export const sliderContainer = {
-  'background-color': 'lightgray',
+  backgroundColor: 'lightgray',
   display: 'flex',
   'justify-content': 'center',
 };

@@ -5,14 +5,14 @@ export const inputContainer = {
   width: 'auto',
   display: 'flex',
   'flex-direction': 'column',
-  border: '1px solid',
-  'margin-left': '5px',
+  border: '5px solid orange',
+  'margin-left': '10px',
 };
 export const headingStyle = {
   'margin-left': '5px',
 };
 
 export const inputDemoContainer = {
-  'font-size': '16px !important',
+  fontSize: '16px !important',
   margin: '1vw',
 };
