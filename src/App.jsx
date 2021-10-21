@@ -1,5 +1,6 @@
 import React from 'react';
-import InputDemo from './pages/InputDemo';
+// import InputDemo from './pages/InputDemo';
+import AddDialog from './pages/Trainee/components/AddDialog';
 // import TextFieldDemo from './pages/TextFieldDemo/TextFieldDemo';
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* <TextFieldDemo /> */}
-        <InputDemo />
+        {/* <InputDemo /> */}
+        <AddDialog />
       </header>
     </div>
   );
