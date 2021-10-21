@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  SelectField, RadioGroup, TextField, Button,
+  SelectField, RadioGroup, TextField,
 } from '../../components';
-import { inputDemoContainer, btnstyle, btnContainer } from './style';
+import { inputDemoContainer } from './style';
 import { selectOptions, radioOptions } from '../../configs/Constant';
 
 const InputDemo = () => {
@@ -49,10 +49,6 @@ const InputDemo = () => {
       <TextField label="Name" onChange={handleNameChange} />
       <SelectField defaultText="Select" value={value.sport} options={selectOptions} onChange={handleSportChange} />
       <RadioGroup value={value.sport} options={radioOptions} onChange={handleSportProfileChange} />
-      <div style={btnContainer}>
-        <Button value="Cancel" style={btnstyle} />
-        <Button value="Submit" style={btnstyle} />
-      </div>
     </form>
   );
 };
