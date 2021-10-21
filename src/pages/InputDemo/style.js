@@ -5,16 +5,31 @@ export const mainContainer = {
 export const inputContainer = {
   width: 'auto',
   display: 'flex',
-  'flex-direction': 'column',
+  flexDirection: 'column',
   border: '1px solid',
-  'margin-left': '5px',
+  marginLeft: '5px',
 };
 
 export const headingStyle = {
-  'margin-left': '5px',
+  marginLeft: '5px',
 };
 
 export const inputDemoContainer = {
-  'font-size': '16px !important',
+  fontSize: '16px !important',
   margin: '1vw',
+};
+
+export const btnContainer = {
+  display: 'flex',
+  justifyContent: 'end',
+};
+
+export const btnStyle = {
+  width: 'auto',
+  padding: '12px 20px',
+  margin: '11px 5px',
+  display: 'inline-block',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  color: 'white',
 };
