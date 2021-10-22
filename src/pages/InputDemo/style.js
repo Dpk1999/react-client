@@ -31,5 +31,5 @@ export const btnStyle = {
   display: 'inline-block',
   border: '1px solid #ccc',
   borderRadius: '4px',
-  color: 'white',
+  color: 'black',
 };
