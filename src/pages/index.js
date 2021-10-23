@@ -1,2 +1,2 @@
 /*eslint-disable*/
-export { default as TextFieldDemo } from './TextFieldDemo';
+export { ChildrenDemo } from './ChildrenDemo';

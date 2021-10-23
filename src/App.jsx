@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React from 'react';
 // import InputDemo from './pages/InputDemo';
 import AddDialog from './pages/Trainee/components/AddDialog';

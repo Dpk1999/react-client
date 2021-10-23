@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SelectField, RadioGroup, TextField } from '../../components';
-import { inputDemoContainer } from './style';
-import { radioOptions, selectOptions } from '../../configs/Constant';
+import {
+  SelectField, RadioGroup, TextField, Button,
+} from '../../components';
+import { inputDemoContainer, btnstyle, btnContainer } from './style';
+import { selectOptions, radioOptions } from '../../configs/Constant';
 
 const InputDemo = () => {
   const [value, setValue] = useState({
@@ -43,11 +45,15 @@ const InputDemo = () => {
   });
 
   return (
-    <div style={inputDemoContainer}>
+    <form style={inputDemoContainer}>
       <TextField label="Name" onChange={handleNameChange} />
       <SelectField defaultText="Select" value={value.sport} options={selectOptions} onChange={handleSportChange} />
       <RadioGroup value={value.sport} options={radioOptions} onChange={handleSportProfileChange} />
-    </div>
+      <div style={btnContainer}>
+        <Button value="Cancel" style={btnstyle} />
+        <Button value="Submit" style={btnstyle} />
+      </div>
+    </form>
   );
 };
 
