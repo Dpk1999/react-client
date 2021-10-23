@@ -4,3 +4,4 @@ export { default as Slider } from './Slider';
 export { default as SelectField } from './SelectField';
 export { default as RadioGroup } from './RadioGroup';
 export { default as Button } from './Button';
+export { Math } from './Math';
