@@ -11,7 +11,7 @@ export const BOWLER = 'Bowler';
 export const ALL_ROUNDER = 'All Rounder';
 export const DEFENDER = 'Defender';
 export const STRIKER = 'Striker';
-export const DEFAULTSELECT = 'Select';
+export const DEFAULT_SELECT = 'select';
 export const SELECT_OPTIONS = [
   {
     value: CRICKET_VALUE,

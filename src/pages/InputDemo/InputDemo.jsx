@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import {
   SelectField, RadioGroup, TextField, Button,
-} from '../../components';
+} from '../../components/index';
 import { btnContainer, inputDemoContainer, btnStyle } from './style';
 import {
-  SELECT_OPTIONS, RADIO_OPTIONS, DEFAULTSELECT, CRICKET_VALUE,
+  SELECT_OPTIONS, RADIO_OPTIONS, DEFAULT_SELECT, CRICKET_VALUE,
 } from '../../configs/Constant';
-import { getError, hasError, isTouched } from '../../lib/utils/helper';
+import { getError, hasErrors, isTouched } from '../../lib/utils/helper';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -33,58 +33,53 @@ const InputDemo = () => {
   const [error, setError] = useState([]);
   const [touched, setTouched] = useState([]);
 
-  const handleErrors = (formValues) => {
+  const handleErrors = async (formValues) => {
     const {
       name: newName, sport: newSport, football: newFootball, cricket: newCricket,
     } = formValues;
-    schema.validate({
+    await schema.validate({
       name: newName, sport: newSport, football: newFootball, cricket: newCricket,
     }, { abortEarly: false }).then(() => {
+      setError({});
     }).catch((errors) => {
       const schemaErrors = {};
       if (errors) {
         errors.inner.forEach((err) => { schemaErrors[err.path] = err.message; });
         setError(schemaErrors);
-        console.log('handleError', error);
       }
     });
   };
 
-  const onBlurHandler = (event, type) => {
+  const onBlurHandler = async (event, type) => {
     touched[type] = true;
     setTouched(touched);
-    handleErrors({
+    await handleErrors({
       name, sport, football, cricket,
     });
-    console.log(touched);
   };
 
   const handleSportChange = async (event) => {
     const { value } = event.target;
-    if (value === '' || value === DEFAULTSELECT) {
+    if (value === '' || value === DEFAULT_SELECT) {
       setSport('');
     } else {
       setSport(value);
     }
     setCricket('');
     setFootball('');
-    setName(name);
-    handleErrors({
+    await handleErrors({
       name, sport, football, cricket,
     });
   };
 
-  const handleNameChange = (event) => {
+  const handleNameChange = async (event) => {
     setName(event.target.value);
-    setSport(sport);
-    setFootball(football);
-    setCricket(cricket);
-    handleErrors({
+    await handleErrors({
       name, sport, football, cricket,
     });
   };
 
-  const handleSportProfileChange = (event) => {
+  const handleWhatToDoChange = async (event) => {
     if (event.target.value === CRICKET_VALUE) {
       setFootball('');
       setCricket(event.target.attributes.label.value);
@@ -92,18 +87,16 @@ const InputDemo = () => {
       setCricket('');
       setFootball(event.target.attributes.label.value);
     }
-    setName(name);
-    setSport(sport);
-    handleErrors({
+    await handleErrors({
       name, sport, football, cricket,
     });
   };
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log({
       name, sport, football, cricket,
     });
-    console.log(error);
   });
 
   const onClick = () => {
@@ -113,13 +106,13 @@ const InputDemo = () => {
     <form style={inputDemoContainer}>
       <TextField
         onBlur={(event) => { onBlurHandler(event, 'name'); }}
-        errorMessage={touched.name ? getError(error, 'name') : ''}
+        errorMessage={getError(touched, error, 'name')}
         label="Name"
         onChange={handleNameChange}
       />
       <SelectField
         onBlur={(event) => { onBlurHandler(event, 'sport'); }}
-        error={touched.sport ? getError(error, 'sport') : ''}
+        error={getError(touched, error, 'sport')}
         selectLabel="Select the game you want to play?"
         defaultText="Select"
         value={sport}
@@ -130,24 +123,30 @@ const InputDemo = () => {
         ? (
           <RadioGroup
             onBlur={(event) => { onBlurHandler(event, 'cricket'); }}
-            error={touched.cricket ? getError(error, 'cricket') : ''}
+            error={getError(touched, error, 'cricket')}
             value={sport}
             options={RADIO_OPTIONS}
-            onChange={handleSportProfileChange}
+            onChange={handleWhatToDoChange}
           />
         )
         : (
           <RadioGroup
             onBlur={(event) => { onBlurHandler(event, 'football'); }}
-            error={touched.football ? getError(error, 'football') : ''}
+            error={getError(touched, error, 'football')}
             value={sport}
             options={RADIO_OPTIONS}
-            onChange={handleSportProfileChange}
+            onChange={handleWhatToDoChange}
           />
         )}
       <div style={btnContainer}>
         <Button color="gray" style={btnStyle} value="Cancel" />
-        <Button color={hasError(error) || !isTouched(touched) ? 'gray' : '#28a745'} style={btnStyle} value="Submit" disabled={hasError(error) || !isTouched(touched)} onClick={onClick} />
+        <Button
+          color={hasErrors(error) || !isTouched(touched) ? 'gray' : '#28a745'}
+          style={btnStyle}
+          value="Submit"
+          disabled={hasErrors(error) || !isTouched(touched)}
+          onClick={onClick}
+        />
       </div>
     </form>
   );

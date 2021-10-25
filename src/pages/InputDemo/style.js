@@ -5,31 +5,29 @@ export const mainContainer = {
 export const inputContainer = {
   width: 'auto',
   display: 'flex',
-  flexDirection: 'column',
+  'flex-direction': 'column',
   border: '1px solid',
-  marginLeft: '5px',
+  'margin-left': '5px',
 };
 
 export const headingStyle = {
-  marginLeft: '5px',
+  'margin-left': '5px',
 };
 
 export const inputDemoContainer = {
-  fontSize: '16px !important',
+  'font-size': '16px !important',
   margin: '1vw',
 };
-
-export const btnContainer = {
-  display: 'flex',
-  justifyContent: 'end',
-};
-
 export const btnStyle = {
+  'background-color': 'green',
   width: 'auto',
-  padding: '12px 20px',
-  margin: '11px 5px',
-  display: 'inline-block',
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  color: 'black',
+  padding: '11px 32px',
+  margin: '25px 2px',
+  display: 'flex',
+
+};
+export const btnContainer = {
+  width: 'auto',
+  display: 'flex',
+  'justify-content': 'flex-end',
 };

@@ -1,59 +1,42 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { selectInput, errorField } from './style';
+import { selectInput, errorMessage } from './style';
 
 const SelectField = (props) => {
   const {
-    value, error, onChange, options, defaultText, onBlur, selectLabel,
+    value, error, onChange, options, defaultText, onBlur,
   } = props;
+
   return (
     <div>
       <div>
-        <b />
+        <b>
+          Select the game you want to play?
+        </b>
       </div>
       <br />
       <div>
-        <label htmlFor>
-          <b>{selectLabel}</b>
-          <select
-            onBlur={onBlur}
-            style={selectInput}
-            value={value}
-            onChange={onChange}
-          >
-            <option key={defaultText} value={defaultText}>{defaultText}</option>
-            {
-              options.map((item) => {
-                const { value: selectValue, label } = item;
-                return (
-                  <option
-                    key={label}
-                    value={selectValue}
-                  >
-                    {label}
-                  </option>
-                );
-              })
-            }
-          </select>
-        </label>
+        <select onBlur={onBlur} style={selectInput} value={value} onChange={onChange}>
+          <option key={defaultText} value={defaultText}>{defaultText}</option>
+          {
+            options.map((item) => {
+              const { value: selectValue, label } = item;
+              return <option key={label} value={selectValue}>{label}</option>;
+            })
+          }
+        </select>
       </div>
-      <p style={errorField}>{error}</p>
+      <p style={errorMessage}>{error}</p>
     </div>
   );
 };
 SelectField.propTypes = {
   value: PropTypes.string.isRequired,
-  error: PropTypes.string,
+  error: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf.isRequired,
   defaultText: PropTypes.string.isRequired,
   onBlur: PropTypes.func.isRequired,
-  selectLabel: PropTypes.string.isRequired,
-};
-
-SelectField.defaultProps = {
-  error: '',
 };
 
 export default SelectField;

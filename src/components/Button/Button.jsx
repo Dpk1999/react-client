@@ -4,29 +4,30 @@ import PropTypes from 'prop-types';
 const Button = (props) => {
   const {
     color,
-    disable,
+    disabled,
     style,
     value,
     onClick,
   } = props;
 
-  const btnstyle = {
+  const btnStyle = {
     ...style,
-    backgroundcolor: color,
+    backgroundColor: color,
   };
 
   return (
     <>
-      <input type="button" style={btnstyle} value={value} disable={disable} onClick={onClick} />
+      <input type="button" style={btnStyle} value={value} disabled={disabled} onClick={onClick} />
     </>
   );
 };
+
 Button.propTypes = {
   value: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  disable: PropTypes.bool.isRequired,
   style: PropTypes.objectOf.isRequired,
   onClick: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default Button;

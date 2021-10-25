@@ -6,7 +6,8 @@ const TextField = (props) => {
   const {
     label, value, disabled, errorMessage, onChange, onBlur,
   } = props;
-
+  // eslint-disable-next-line no-console
+  console.log(props);
   return (
     <>
       <label htmlFor>
@@ -20,15 +21,11 @@ const TextField = (props) => {
 
 TextField.propTypes = {
   value: PropTypes.string.isRequired,
-  errorMessage: PropTypes.string,
+  errorMessage: PropTypes.string.isRequired,
   disabled: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   onBlur: PropTypes.func.isRequired,
-};
-
-TextField.defaultProps = {
-  errorMessage: '',
 };
 
 export default TextField;
