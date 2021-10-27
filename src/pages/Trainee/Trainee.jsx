@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AddDialog } from './components';
-import { Navbar } from './components/Navbar';
 
 const Trainee = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -11,7 +10,6 @@ const Trainee = () => {
 
   return (
     <div>
-      <Navbar />
       <br />
       <AddDialog open={openDialog} onClose={handleOnClose} />
     </div>

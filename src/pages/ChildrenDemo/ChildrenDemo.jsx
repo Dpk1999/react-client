@@ -3,6 +3,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/core';
 import Text from '../../components/Math/Math';
 import Theme from '../../theme';
+// import { Navbar } from '../Trainee/components/Navbar';
 
 export default class ChildrenDemo extends React.Component {
   Result() {

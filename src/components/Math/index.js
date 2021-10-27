@@ -1,1 +1,3 @@
-export { default as Math } from './Math';
+import Math from './Math';
+
+export default Math;
