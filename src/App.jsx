@@ -1,9 +1,6 @@
 import React from 'react';
-// import { ThemeProvider } from '@mui/material/styles';
-// import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Switch, BrowserRouter } from 'react-router-dom';
-// import theme from './theme';
 import Trainee from './pages/Trainee/Trainee';
 import TextFieldDemo from './pages/TextFieldDemo';
 import InputDemo from './pages/InputDemo/InputDemo';
