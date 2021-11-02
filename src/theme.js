@@ -7,7 +7,7 @@ const theme = createTheme({
       'cursive',
       'sans-serif',
     ].join(','),
-    htmlfontSize: 100,
+    htmlfontSize: 5,
   },
 });
 

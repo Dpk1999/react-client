@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import trainees from './data/trainee';
 import { getDateFormatted } from '../../lib/utils/helper';
 import {
-  btnContainer, cardStyle, cardMediaStyle, boxStyle, cardContentStyle, buttonStyle, linkStyle,
+  linkStyle, btnContainer, cardStyle, cardMediaStyle, boxStyle, cardContentStyle, buttonStyle,
 } from './style';
 
 const TraineeDetail = (props) => {

@@ -24,8 +24,9 @@ const TraineeList = (props) => {
     </div>
   );
 };
+
+export default TraineeList;
+
 TraineeList.propTypes = {
   trainees: PropTypes.objectOf.isRequired,
 };
-
-export default TraineeList;
