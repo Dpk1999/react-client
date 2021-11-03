@@ -11,7 +11,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import TableBody from '@material-ui/core/TableBody';
+import TablePagination from '@mui/material/TablePagination';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import { visuallyHidden } from '@mui/utils';
 
 const useStyles = makeStyles({
@@ -49,10 +51,7 @@ const ButtonLink = (props) => {
   return (
     <Button
       to={link}
-      variant="contained"
       type="button"
-      size="small"
-      className="button-classes"
       startIcon={icon}
     />
   );
@@ -86,7 +85,20 @@ const stableSort = (array, comparator) => {
 
 const DataTable = (props) => {
   const {
-    id, data, columns, orderBy, order, onSort, compPath,
+    id,
+    data,
+    columns,
+    actions,
+    orderBy,
+    order,
+    onSort,
+    compPath,
+    rowsPerPageOptions,
+    count,
+    rowsPerPage,
+    page,
+    onChangePage,
+    onRowsPerPageChange,
   } = props;
   const classes = useStyles();
 
@@ -132,38 +144,53 @@ const DataTable = (props) => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {stableSort(data, getComparator(order, orderBy)).map((item) => (
-              <StyledTableRow
-                key={item.id}
-                component={Link}
-                style={{ textDecoration: 'none' }}
-                to={`${compPath}/${item.id}`}
-              >
-                {columns.map((body) => {
-                  const value = item[body.field];
-                  return (
-                    typeof body === 'object'
-                      ? (
-                        <StyledTableCell
-                          align={body.align}
-                          key={body}
-                        >
-                          {body.format && typeof value === 'string'
-                            ? body.format(value)
-                            : item[body.field]}
-                        </StyledTableCell>
-                      ) : (
-                        <TableCell align={body.align} key={body}>
-                          No data found
-                        </TableCell>
-                      )
-                  );
-                })}
-              </StyledTableRow>
-            ))}
+            {stableSort(data, getComparator(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item) => (
+                <StyledTableRow
+                  key={item.id}
+                  component={Link}
+                  style={{ textDecoration: 'none' }}
+                  to={`${compPath}/${item.id}`}
+                >
+                  {columns.map((body) => {
+                    const value = item[body.field];
+                    return (
+                      <StyledTableCell
+                        align={body.align}
+                        key={body}
+                      >
+                        {body.format && typeof value === 'string'
+                          ? body.format(value)
+                          : value || 'No Data Found'}
+                      </StyledTableCell>
+                    );
+                  })}
+                  <StyledTableCell align="center" onClick={(e) => e.preventDefault()}>
+                    {actions.map((action) => (
+                      <IconButton
+                        onClick={() => action.handler(item)}
+                        size="small"
+                        sx={{ color: 'rgb(32,32,32)' }}
+                      >
+                        {action.icon}
+                      </IconButton>
+                    ))}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
+        component="div"
+        count={count}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={onChangePage}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />
     </Paper>
   );
 };
@@ -187,10 +214,20 @@ DataTable.propTypes = {
     align: PropTypes.string,
     format: PropTypes.func,
   })).isRequired,
+  actions: PropTypes.arrayOf(PropTypes.shape({
+    icon: PropTypes.instanceOf(Element),
+    handler: PropTypes.func,
+  })).isRequired,
   orderBy: PropTypes.string.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   onSort: PropTypes.func.isRequired,
   compPath: PropTypes.string.isRequired,
+  rowsPerPageOptions: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  onChangePage: PropTypes.func.isRequired,
+  onRowsPerPageChange: PropTypes.func.isRequired,
 };
 
 export default DataTable;

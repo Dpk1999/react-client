@@ -151,8 +151,6 @@ const AddDialog = () => {
               helperText={getError(touched, error, 'name')}
               error={touched.name && getError(touched, error, 'name') !== ''}
             />
-            {/* <Icon baseClassName="material-icons-two-tone">add_circle</Icon> */}
-            {/* <PersonIcon /> */}
             <br />
             <br />
             <TextField
