@@ -1,6 +1,6 @@
 const stylesPrivateRoute = {
   container: {
-    padding: '5px',
+    padding: '20px',
   },
 };
 

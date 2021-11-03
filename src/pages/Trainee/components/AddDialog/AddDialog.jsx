@@ -122,7 +122,7 @@ const AddDialog = () => {
   return (
     <div>
       <Button
-        style={{ margin: '12px' }}
+        // style={{ margin: '12px' }}
         variant="outlined"
         color="primary"
         onClick={handleClickOpen}
