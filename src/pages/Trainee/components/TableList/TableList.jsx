@@ -17,8 +17,8 @@ const tableData = [
 const TableList = () => (
   <DataTable
     id="table1"
-    data={trainees}
-    columns={tableData}
+    trainees={trainees}
+    column={tableData}
   />
 );
 
