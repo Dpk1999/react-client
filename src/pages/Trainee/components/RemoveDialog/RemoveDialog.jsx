@@ -27,7 +27,7 @@ const RemoveDialog = (props) => {
           <DialogActions>
             <Button onClick={() => onClose('cancel')}>Cancel</Button>
             <Button
-              type="submit"
+              type="button"
               onClick={handleSubmit}
             >
               Delete

@@ -118,7 +118,7 @@ const EditDialog = (props) => {
           <DialogActions>
             <Button onClick={() => onClose('cancel')}>Cancel</Button>
             <Button
-              type="submit"
+              type="button"
               disabled={hasErrors(error) || !isTouched(touched)}
               onClick={handleSubmit}
             >
