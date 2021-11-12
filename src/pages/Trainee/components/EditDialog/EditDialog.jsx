@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -21,12 +21,12 @@ const schema = Yup.object({
 
 const EditDialog = (props) => {
   const {
-    open, onClose, handleSubmit, nameValue, emailValue,
+    open, onClose, handleSubmit, traineeValues,
   } = props;
   const [error, setError] = useState([]);
   const [touched, setTouched] = useState([]);
-  const [name, setName] = useState(nameValue);
-  const [email, setEmail] = useState(emailValue);
+  const [name, setName] = useState(traineeValues.name);
+  const [email, setEmail] = useState(traineeValues.email);
 
   const handleErrors = (formValues) => {
     const {
@@ -67,17 +67,11 @@ const EditDialog = (props) => {
     });
   };
 
-  useEffect(() => {
-    console.log({
-      name, email,
-    });
-  });
-
   return (
     <div>
       <Dialog maxWidth="md" open={open} onClose={onClose}>
         <DialogTitle>Edit Trainee</DialogTitle>
-        <form>
+        <form onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>
               Enter your trainee details
@@ -90,6 +84,7 @@ const EditDialog = (props) => {
               id="outlined-basic"
               fullWidth
               required
+              name="name"
               label="Name"
               variant="outlined"
               value={name}
@@ -105,6 +100,7 @@ const EditDialog = (props) => {
                 startAdornment: <InputAdornment position="start"><EmailIcon /></InputAdornment>,
               }}
               id="outlined-basic"
+              name="email"
               fullWidth
               value={email}
               onChange={(event) => onChangeHandler('email', event)}
@@ -118,9 +114,9 @@ const EditDialog = (props) => {
           <DialogActions>
             <Button onClick={() => onClose('cancel')}>Cancel</Button>
             <Button
-              type="button"
+              type="submit"
               disabled={hasErrors(error) || !isTouched(touched)}
-              onClick={handleSubmit}
+              id={traineeValues.id}
             >
               Submit
             </Button>
@@ -135,8 +131,7 @@ EditDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  nameValue: PropTypes.string.isRequired,
-  emailValue: PropTypes.string.isRequired,
+  traineeValues: PropTypes.objectOf.isRequired,
 };
 
 export default EditDialog;

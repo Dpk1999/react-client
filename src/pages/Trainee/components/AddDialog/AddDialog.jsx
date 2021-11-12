@@ -113,7 +113,17 @@ const AddDialog = () => {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setName('');
+    setEmail('');
+    setPassword('');
+    setPasswordConfirmation('');
+    setOpen(false);
+  };
+
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log({
       name, email, password, passwordConfirmation,
     });
@@ -122,16 +132,15 @@ const AddDialog = () => {
   return (
     <div>
       <Button
-        // style={{ margin: '12px' }}
+        style={{ margin: '12px' }}
         variant="outlined"
-        color="primary"
         onClick={handleClickOpen}
       >
         ADD TRAINEE
       </Button>
-      <Dialog maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog fullWidth maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitle>Add Trainee</DialogTitle>
-        <form>
+        <form onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>
               Enter your trainee details
@@ -151,6 +160,8 @@ const AddDialog = () => {
               helperText={getError(touched, error, 'name')}
               error={touched.name && getError(touched, error, 'name') !== ''}
             />
+            {/* <Icon baseClassName="material-icons-two-tone">add_circle</Icon> */}
+            {/* <PersonIcon /> */}
             <br />
             <br />
             <TextField

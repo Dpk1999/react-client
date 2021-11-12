@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 const RemoveDialog = (props) => {
   const {
-    open, onClose, handleSubmit,
+    open, onClose, handleSubmit, id,
   } = props;
 
   return (
@@ -29,6 +29,7 @@ const RemoveDialog = (props) => {
             <Button
               type="button"
               onClick={handleSubmit}
+              id={id}
             >
               Delete
             </Button>
@@ -43,6 +44,7 @@ RemoveDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default RemoveDialog;
