@@ -1,18 +1,18 @@
 export const error = {
   color: 'red',
-  marginLeft: '5px',
-  marginRight: '5px',
+  'margin-left': '5px',
+  'margin-right': '5px',
 };
 
 export const errorBorder = {
   border: '1px solid #f00',
   width: '100%',
-  marginLeft: '5px',
-  marginRight: '5px',
+  'margin-left': '5px',
+  'margin-right': '5px',
   padding: '12px 20px',
   display: 'inline-block',
-  borderRadius: '4px',
-  boxSizing: 'border-box',
+  'border-radius': '4px',
+  'box-sizing': 'border-box',
 };
 
 export const container = {
@@ -35,14 +35,16 @@ export const inputContainer = {
 
 export const inputSize = {
   width: '100%',
+  // 'margin-left': '5px',
+  // 'margin-right': '5px',
   padding: '12px 20px',
   display: 'inline-block',
   border: '1px solid #ccc',
-  borderRadius: '4px',
-  boxSizing: 'border-box',
+  'border-radius': '4px',
+  'box-sizing': 'border-box',
   margin: '20px 0px 20px 0px',
 };
 
 export const headingStyle = {
-  marginLeft: '5px',
+  'margin-left': '5px',
 };

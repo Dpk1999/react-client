@@ -18,3 +18,16 @@ export const inputDemoContainer = {
   'font-size': '16px !important',
   margin: '1vw',
 };
+export const btnStyle = {
+  'background-color': 'green',
+  width: 'auto',
+  padding: '11px 32px',
+  margin: '25px 2px',
+  display: 'flex',
+
+};
+export const btnContainer = {
+  width: 'auto',
+  display: 'flex',
+  'justify-content': 'flex-end',
+};
