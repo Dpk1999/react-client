@@ -15,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
 import { IconButton } from '@mui/material';
 import { getError, hasErrors, isTouched } from '../../../../lib/utils/helper';
+import { SnackContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -39,6 +40,7 @@ const AddDialog = () => {
     password: false,
     passwordConfirmation: false,
   });
+  const AddSnack = React.useContext(SnackContext);
 
   const handleErrors = (formValues) => {
     const {
@@ -120,6 +122,8 @@ const AddDialog = () => {
     setPassword('');
     setPasswordConfirmation('');
     setOpen(false);
+    AddSnack({ message: 'Trainee Added Successefully', status: 'success' });
+    console.log('trainee Added');
   };
 
   useEffect(() => {

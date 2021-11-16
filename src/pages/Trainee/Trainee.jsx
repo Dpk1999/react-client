@@ -8,6 +8,7 @@ import trainees from './data/trainee';
 import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
+import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const Trainee = () => {
   const [order, setOrder] = useState('asc');
@@ -23,7 +24,7 @@ const Trainee = () => {
     email: '',
     createdAt: '',
   });
-
+  const AddSnack = React.useContext(SnackContext);
   const handleSort = (field) => {
     let sortedItems = [];
     if (order === 'asc') {
@@ -95,6 +96,7 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
+    AddSnack({ message: 'Trainee Edited Successefully', status: 'success' });
   };
 
   const handleOnRemoveClose = () => {
@@ -108,7 +110,14 @@ const Trainee = () => {
 
   const handleOnRemoveSubmit = (event) => {
     setOpenRemoveDialog(false);
-    console.log('Deleted Item', alltrainees.find((trainee) => trainee.id === event.target.id));
+    const data = alltrainees.find((trainee) => trainee.id === event.target.id);
+    const fixdate = new Date('2019-02-14');
+    const date = new Date(data.createdAt);
+    if (fixdate.getTime() < date.getTime()) {
+      AddSnack({ message: 'Trainee Deleted Successefully', status: 'success' });
+    } else {
+      AddSnack({ message: 'Error Message', status: 'error' });
+    }
   };
 
   return (
