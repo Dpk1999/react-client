@@ -1,16 +1,9 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React from 'react';
-import InputDemo from './pages/InputDemo';
-// import TextFieldDemo from './pages/TextFieldDemo/TextFieldDemo';
+import { ChildrenDemo } from './pages/index';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <TextFieldDemo /> */}
-        <InputDemo />
-      </header>
-    </div>
-  );
-}
+const App = () => (
+  <ChildrenDemo />
+);
 
 export default App;

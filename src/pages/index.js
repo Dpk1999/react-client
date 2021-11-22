@@ -1,2 +1,2 @@
 /*eslint-disable*/
-export { default as InputDemo } from './InputDemo';
+export { ChildrenDemo } from './ChildrenDemo';
