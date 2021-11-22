@@ -1,9 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React from 'react';
-import { ChildrenDemo } from './pages/index';
+import Trainee from './pages/Trainee/Trainee';
 
-const App = () => (
-  <ChildrenDemo />
-);
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Trainee />
+      </header>
+    </div>
+  );
+}
 
 export default App;
