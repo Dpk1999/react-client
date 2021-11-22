@@ -10,6 +10,7 @@ const Trainee = () => {
 
   return (
     <div>
+      <br />
       <AddDialog open={openDialog} onClose={handleOnClose} />
     </div>
   );

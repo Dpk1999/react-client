@@ -8,6 +8,7 @@ import {
   SELECT_OPTIONS, RADIO_OPTIONS, DEFAULT_SELECT, CRICKET_VALUE,
 } from '../../configs/Constant';
 import { getError, hasErrors, isTouched } from '../../lib/utils/helper';
+// import { Navbar } from '../Trainee/components/Navbar';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -104,6 +105,7 @@ const InputDemo = () => {
 
   return (
     <form style={inputDemoContainer}>
+      <br />
       <TextField
         onBlur={(event) => { onBlurHandler(event, 'name'); }}
         errorMessage={getError(touched, error, 'name')}

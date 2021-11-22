@@ -124,11 +124,12 @@ const AddDialog = () => {
       <Button
         style={{ margin: '12px' }}
         variant="outlined"
+        color="primary"
         onClick={handleClickOpen}
       >
         ADD TRAINEE
       </Button>
-      <Dialog fullWidth maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitle>Add Trainee</DialogTitle>
         <form>
           <DialogContent>

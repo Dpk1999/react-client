@@ -1,3 +1,7 @@
-/*eslint-disable*/
-export { ChildrenDemo } from './ChildrenDemo';
-export { Trainee } from './Trainee';
+export { default as TextFieldDemo } from './TextFieldDemo';
+export { default as InputDemo } from './InputDemo';
+export { default as ChildrenDemo } from './ChildrenDemo';
+// eslint-disable-next-line import/named
+export { default as Trainee } from './Trainee';
+export { default as Login } from './Login';
+export { default as NoMatch } from './NoMatch';
