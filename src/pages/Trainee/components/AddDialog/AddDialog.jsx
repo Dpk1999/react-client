@@ -15,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import * as Yup from 'yup';
 import { IconButton } from '@mui/material';
 import { getError, hasErrors, isTouched } from '../../../../lib/utils/helper';
+import { SnackContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -39,6 +40,7 @@ const AddDialog = () => {
     password: false,
     passwordConfirmation: false,
   });
+  const AddSnack = React.useContext(SnackContext);
 
   const handleErrors = (formValues) => {
     const {
@@ -113,7 +115,19 @@ const AddDialog = () => {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setName('');
+    setEmail('');
+    setPassword('');
+    setPasswordConfirmation('');
+    setOpen(false);
+    AddSnack({ message: 'Trainee Added Successefully', status: 'success' });
+    console.log('trainee Added');
+  };
+
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log({
       name, email, password, passwordConfirmation,
     });
@@ -124,14 +138,13 @@ const AddDialog = () => {
       <Button
         style={{ margin: '12px' }}
         variant="outlined"
-        color="primary"
         onClick={handleClickOpen}
       >
         ADD TRAINEE
       </Button>
-      <Dialog maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog fullWidth maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitle>Add Trainee</DialogTitle>
-        <form>
+        <form onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>
               Enter your trainee details
