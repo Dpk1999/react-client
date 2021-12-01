@@ -1,1 +1,3 @@
-export { default as Trainee } from './Trainee';
+import Trainee from './Trainee';
+
+export default Trainee;

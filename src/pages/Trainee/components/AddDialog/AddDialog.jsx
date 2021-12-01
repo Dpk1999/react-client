@@ -124,6 +124,7 @@ const AddDialog = () => {
       <Button
         style={{ margin: '12px' }}
         variant="outlined"
+        color="primary"
         onClick={handleClickOpen}
       >
         ADD TRAINEE

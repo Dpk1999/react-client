@@ -1,1 +1,3 @@
-export { default as ChildrenDemo } from './ChildrenDemo';
+import ChildrenDemo from './ChildrenDemo';
+
+export default ChildrenDemo;

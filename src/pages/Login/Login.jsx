@@ -24,8 +24,7 @@ class Login extends React.Component {
       email: yup.string()
         .trim().email().required('Email Address is a required field'),
       password: yup.string()
-        .required('Password is required')
-        .matches(/^(?=.[a-z])(?=.[A-Z])(?=.*[0-9])(?=.{8,})/, 'Must contain 8 characters, at least one uppercase letter, one lowercase letter and one number'),
+        .required('Password is required'),
     });
 
     constructor(props) {
@@ -118,7 +117,7 @@ class Login extends React.Component {
                       fullWidth
                       id="outlined-required"
                       label="Password"
-                      defaultValue=" "
+                      defaultValue=""
                       variant="outlined"
                       helperText={this.getError('password')}
                       error={!!this.getError('password')}
@@ -145,6 +144,7 @@ class Login extends React.Component {
       );
     }
 }
+
 Login.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
