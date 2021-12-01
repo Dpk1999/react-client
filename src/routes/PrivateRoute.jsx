@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
@@ -9,9 +10,11 @@ const PrivateRoute = (props) => {
     <Route
       exact={exact}
       path={path}
-      render={
-        () => <PrivateLayout><Component /></PrivateLayout>
-      }
+      render={(matchProps) => (
+        <PrivateLayout>
+          <Component {...matchProps} />
+        </PrivateLayout>
+      )}
     />
   );
 };
@@ -20,6 +23,7 @@ PrivateRoute.propTypes = {
   exact: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   component: PropTypes.func.isRequired,
+  matchesParam: PropTypes.objectOf.isRequired,
 };
 
 export default PrivateRoute;
