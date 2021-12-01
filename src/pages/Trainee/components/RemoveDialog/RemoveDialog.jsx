@@ -17,24 +17,22 @@ const RemoveDialog = (props) => {
     <div>
       <Dialog maxWidth="md" open={open} onClose={onClose}>
         <DialogTitle>Remove Trainee</DialogTitle>
-        <form>
-          <DialogContent>
-            <DialogContentText>
-              Do you really want to remove the trainee?
-            </DialogContentText>
-            <br />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => onClose('cancel')}>Cancel</Button>
-            <Button
-              type="button"
-              onClick={handleSubmit}
-              id={id}
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </form>
+        <DialogContent>
+          <DialogContentText>
+            Do you really want to remove the trainee?
+          </DialogContentText>
+          <br />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => onClose('cancel')}>Cancel</Button>
+          <Button
+            type="button"
+            onClick={handleSubmit}
+            id={id}
+          >
+            Delete
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );

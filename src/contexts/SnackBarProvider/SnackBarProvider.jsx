@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 /**
  * @SnackContext hold state of snackBar and messages.
  */
-export const SnackContext = createContext();
+export const SnackBarContext = createContext();
 
 /**
  *@description SnackBar method
@@ -62,7 +62,7 @@ const SnackBarProvider = (props) => {
 
   return (
     <>
-      <SnackContext.Provider value={handleChange}>{children}</SnackContext.Provider>
+      <SnackBarContext.Provider value={handleChange}>{children}</SnackBarContext.Provider>
       <SnackBars open={open} message={message} status={status} onClose={handleClose} />
     </>
   );

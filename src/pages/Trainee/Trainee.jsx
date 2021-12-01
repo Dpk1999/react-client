@@ -8,7 +8,7 @@ import trainees from './data/trainee';
 import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
-import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import SnackBarContext from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const Trainee = () => {
   const [order, setOrder] = useState('asc');
@@ -24,7 +24,7 @@ const Trainee = () => {
     email: '',
     createdAt: '',
   });
-  const AddSnack = React.useContext(SnackContext);
+  const openSnackBar = React.useContext(SnackBarContext);
   const handleSort = (field) => {
     let sortedItems = [];
     if (order === 'asc') {
@@ -96,7 +96,7 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
-    AddSnack({ message: 'Trainee Edited Successefully', status: 'success' });
+    openSnackBar('This is success message', 'success');
   };
 
   const handleOnRemoveClose = () => {
@@ -109,14 +109,18 @@ const Trainee = () => {
   };
 
   const handleOnRemoveSubmit = (event) => {
+    event.preventDefault();
     setOpenRemoveDialog(false);
+    // openSnackBar('This is success message', 'success');
+    // console.log('Deleted Item', alltrainees.find((trainee) => trainee.id === event.target.id));
     const data = alltrainees.find((trainee) => trainee.id === event.target.id);
     const fixdate = new Date('2019-02-14');
     const date = new Date(data.createdAt);
+    console.log('fixdate.getTime() < date.getTime()', fixdate.getTime(), date.getTime());
     if (fixdate.getTime() < date.getTime()) {
-      AddSnack({ message: 'Trainee Deleted Successefully', status: 'success' });
+      openSnackBar({ message: 'This is success message', status: 'success' });
     } else {
-      AddSnack({ message: 'Error Message', status: 'error' });
+      openSnackBar({ message: 'This is error message', status: 'error' });
     }
   };
 
@@ -131,7 +135,7 @@ const Trainee = () => {
             field: 'name',
             label: 'Name',
             align: 'left',
-            format: (value) => value,
+            format: (value) => value.toLowerCase(),
           },
           {
             field: 'email',
@@ -170,7 +174,7 @@ const Trainee = () => {
           open={openEditDialog}
           traineeValues={traineeValues}
           onClose={handleOnEditClose}
-          handleSubmit={(event) => handleOnEditSubmit(event)}
+          onSubmit={(event) => handleOnEditSubmit(event)}
         />
       )}
       {openRemoveDialog && (

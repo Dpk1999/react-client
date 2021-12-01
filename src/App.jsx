@@ -1,35 +1,34 @@
 import React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Switch, BrowserRouter, Redirect } from 'react-router-dom';
-import Trainee from './pages/Trainee/Trainee';
-import TextFieldDemo from './pages/TextFieldDemo';
-import InputDemo from './pages/InputDemo/InputDemo';
-import ChildrenDemo from './pages/ChildrenDemo';
-import Login from './pages/Login';
-import { AuthRoute, PrivateRoute } from './routes';
-import { NoMatch } from './pages';
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import { SnackBarProvider } from './contexts/SnackBarProvider';
+import {
+  Trainee, InputDemo, TextFieldDemo, Login, ChildrenDemo, NoMatch,
+} from './pages';
+import AuthRoute from './routes/AuthRoute';
+import { PrivateRoute } from './routes';
 import TraineeDetail from './pages/Trainee/TraineeDetail';
-import SnackBarProvider from './contexts/SnackBarProvider';
 
-const App = () => (
-  <>
-    <CssBaseline />
-    <BrowserRouter>
-      <SnackBarProvider>
-        <Switch>
-          <PrivateRoute exact path="/" component={Trainee} />
-          <PrivateRoute exact path="/Trainee" component={Trainee} />
-          <PrivateRoute exact path="/TextFieldDemo" component={TextFieldDemo} />
-          <PrivateRoute exact path="/InputDemo" component={InputDemo} />
-          <PrivateRoute exact path="/ChildrenDemo" component={ChildrenDemo} />
-          <AuthRoute exact path="/Login" component={Login} />
-          <PrivateRoute path="/trainee/:id" component={TraineeDetail} />
-          <PrivateRoute component={NoMatch} />
-          <Redirect to="/login" />
-        </Switch>
-      </SnackBarProvider>
-    </BrowserRouter>
-  </>
-);
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <SnackBarProvider>
+
+          <Switch>
+            <AuthRoute exact path="/" component={Login} />
+            <AuthRoute exact path="/login" component={Login} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="/trainee" component={Trainee} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="/trainee/:id" component={TraineeDetail} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="/childrendemo" component={ChildrenDemo} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="/textfielddemo" component={TextFieldDemo} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="/inputdemo" component={InputDemo} />
+            <PrivateRoute token={localStorage.getItem('token')} exact path="*" component={NoMatch} />
+            <Redirect to="/login" />
+          </Switch>
+        </SnackBarProvider>
+      </BrowserRouter>
+    </div>
+  );
+}
 
 export default App;
