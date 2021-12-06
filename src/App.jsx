@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
-import { SnackBarProvider } from './contexts/SnackBarProvider';
+import { SnackBarProvider } from './contexts';
 import {
   Trainee, InputDemo, TextFieldDemo, Login, ChildrenDemo, NoMatch,
 } from './pages';

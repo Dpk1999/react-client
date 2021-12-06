@@ -1,75 +1,50 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { createContext, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
-/**
- * @SnackContext hold state of snackBar and messages.
- */
-export const SnackBarContext = createContext();
+// eslint-disable-next-line react/jsx-props-no-spreading
+const MuiAlert = React.forwardRef((props, ref) => <Alert elevation={6} ref={ref} variant="filled" />);
 
-/**
- *@description SnackBar method
- * @returns Snack Component
- */
+export const SnackBarContext = React.createContext();
 
-const Alert = React.forwardRef((props, ref) => <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />);
+const SnackBarProvider = ({ children }) => {
+  const [snackBarValues, setSnackBarValues] = useState({
+    open: false,
+    message: '',
+    status: '',
+  });
+  const { open, message, status } = snackBarValues;
 
-export const SnackBars = (props) => {
-  const {
-    open, message, status, onClose,
-  } = props;
-  return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
-      <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
-        <Alert severity={status} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </Stack>
-  );
-};
-
-SnackBars.propTypes = {
-  open: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
-  status: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-/**
- * @description SnackBar Context Provider
- */
-const SnackBarProvider = (props) => {
-  const { children } = props;
-  const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState('success');
-  const [message, setMessage] = useState(false);
-
-  const handleChange = ({ message: newMessage, status: newStatus }) => {
-    setOpen(true);
-    setStatus(newStatus);
-    setMessage(newMessage);
+  const openSnackBar = ([msg, stat]) => {
+    setSnackBarValues({
+      ...snackBarValues, open: true, message: msg, status: stat,
+    });
   };
-  const handleClose = (event, reason) => {
-    if (reason === 'click-away') {
+
+  const closeSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setSnackBarValues({ ...snackBarValues, open: false });
   };
 
   return (
     <>
-      <SnackBarContext.Provider value={handleChange}>{children}</SnackBarContext.Provider>
-      <SnackBars open={open} message={message} status={status} onClose={handleClose} />
+      <SnackBarContext.Provider value={openSnackBar}>
+        {children}
+      </SnackBarContext.Provider>
+      <Snackbar open={open} autoHideDuration={6000} onClose={closeSnackBar}>
+        <MuiAlert onClose={closeSnackBar} severity={status} sx={{ width: '100%' }}>
+          {message}
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 };
 
 SnackBarProvider.propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default SnackBarProvider;

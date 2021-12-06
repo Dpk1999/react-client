@@ -1,1 +1,3 @@
-export { default as SnackBarProvider } from './SnackBarProvider';
+import SnackBarProvider from './SnackBarProvider';
+
+export default SnackBarProvider;

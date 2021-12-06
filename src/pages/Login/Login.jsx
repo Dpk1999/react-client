@@ -57,14 +57,15 @@ const Login = () => {
       password,
     };
     const result = await callAllApi('/user/createToken', 'POST', loginCredential);
+    // if (result.data.status === 'success') {
     if (result) {
       setLoading(false);
-      localStorage.setItem('token', result.data.data.token);
+      localStorage.setItem('token', result.data.token);
       openSnackBar('Successfully Login', 'success');
       history.push('/trainee');
     } else {
       setLoading(false);
-      openSnackBar('Authorization fail', 'error');
+      openSnackBar('Authrization Failed', 'error');
     }
   };
   const onClickHandler = () => {
