@@ -9,8 +9,8 @@ import trainees from './data/trainee';
 import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
-import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 import { callAllApi } from '../../lib/utils/api';
+import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -50,7 +50,7 @@ const Trainee = () => {
     passwordConfirmation: false,
   });
 
-  const openSnackBar = React.useContext(SnackBarContext);
+  const openSnackBar = React.useContext(SnackContext);
   const handleErrors = (formValues) => {
     const {
       name: newName,
@@ -148,7 +148,7 @@ const Trainee = () => {
       setPasswordConfirmation('');
       setOpen(false);
       fetchTrainee();
-      openSnackBar('Trainee Added Successefully', 'success');
+      openSnackBar({ message: 'Trainee Added Successefully', status: 'success' });
     }
   };
 
@@ -223,7 +223,7 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
-    openSnackBar('Trainee Editted Succesfully', 'success');
+    openSnackBar({ message: 'Trainee Editted Succesfully', status: 'success' });
   };
 
   const handleOnRemoveClose = () => {
@@ -238,7 +238,7 @@ const Trainee = () => {
   const handleOnRemoveSubmit = (event) => {
     event.preventDefault();
     setOpenRemoveDialog(false);
-    openSnackBar('Trainee Deleted Succesfully', 'success');
+    openSnackBar({ message: 'Trainee Deleted Succesfully', status: 'success' });
     console.log('Deleted Item', alltrainees.find((trainee) => trainee.originalId === event.target.id));
   };
 

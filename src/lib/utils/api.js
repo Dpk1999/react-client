@@ -16,8 +16,7 @@ export const callAllApi = async (api, route, formData = {}, params = {}) => {
     const { data } = await axios(options);
     response = data;
   } catch (error) {
-    console.log(error.status);
-    response = error.status;
+    response = false;
   }
   return response;
 };

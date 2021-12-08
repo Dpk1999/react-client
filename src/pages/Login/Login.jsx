@@ -7,12 +7,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 import EmailIcon from '@mui/icons-material/Email';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
 import { cardStyle } from './style';
 import { callAllApi } from '../../lib/utils/api';
 import { getError, hasErrors, isTouched } from '../../lib/utils/helper';
-import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
 
 const schema = Yup.object({
   email: Yup.string().email().required().label('Email'),
@@ -27,7 +27,7 @@ const Login = () => {
   const [error, setError] = useState([]);
   const [touched, setTouched] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
-  const openSnackBar = React.useContext(SnackBarContext);
+  const openSnackBar = React.useContext(SnackContext);
   const handleError = (formValues) => {
     const {
       email: newEmail, password: newPassword,
@@ -46,21 +46,17 @@ const Login = () => {
     });
   };
 
-  const spinner = {
-    marginLeft: '5px',
-  };
-
   const handleLogin = async () => {
     setLoading(true);
     const result = await callAllApi('user/createToken', 'POST', { email, password });
-    console.log('result', result);
-    try {
+    if (result) {
       setLoading(false);
-      openSnackBar('Successfully Login', 'success');
+      openSnackBar({ message: 'Successfully Login', status: 'success' });
+      localStorage.setItem('token', result.data.token);
       history.push('/trainee');
-    } catch {
+    } else {
       setLoading(false);
-      openSnackBar('Authrization Failed', 'error');
+      openSnackBar({ message: 'Authrization Failed', status: 'error' });
     }
   };
   const onClickHandler = () => {
@@ -150,9 +146,6 @@ const Login = () => {
             onClick={handleLogin}
           >
             Sign In
-            {loading && (
-              <CircularProgress size={20} style={spinner} />
-            )}
           </Button>
         </CardContent>
       </Card>
