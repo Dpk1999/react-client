@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -12,127 +12,27 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import * as Yup from 'yup';
 import { IconButton } from '@mui/material';
+import PropTypes from 'prop-types';
 import { getError, hasErrors, isTouched } from '../../../../lib/utils/helper';
-import { SnackBarContext } from '../../../../contexts/SnackBarProvider/SnackBarProvider';
 
-const schema = Yup.object({
-  name: Yup.string().min(3).max(10).label('Name')
-    .required(),
-  email: Yup.string().email().required().label('Email'),
-  password: Yup.string().matches(
-    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-    'Password must contain at least 8 characters, one uppercase, one number and one special case character',
-  ).required('Password is required'),
-  passwordConfirmation: Yup.string().required('Password Confirmation is required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
-});
-
-const AddDialog = () => {
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState([]);
-  const [touched, setTouched] = useState([]);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [show, setShow] = useState({
-    password: false,
-    passwordConfirmation: false,
-  });
-  const AddSnack = React.useContext(SnackBarContext);
-
-  const handleErrors = (formValues) => {
-    const {
-      name: newName,
-      email: newEmail,
-      password: newPassword,
-      passwordConfirmation: newPasswordConfirmation,
-    } = formValues;
-    schema.validate({
-      name: newName,
-      email: newEmail,
-      password: newPassword,
-      passwordConfirmation: newPasswordConfirmation,
-    }, { abortEarly: false }).then(() => {
-      setError({});
-    }).catch((errors) => {
-      const schemaErrors = {};
-      if (errors) {
-        errors.inner.forEach((err) => { schemaErrors[err.path] = err.message; });
-        setError(schemaErrors);
-      }
-    });
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const onChangeHandler = (field, event) => {
-    if (field === 'password') {
-      setPassword(event.target.value);
-    }
-    if (field === 'passwordConfirmation') {
-      setPasswordConfirmation(event.target.value);
-    }
-    if (field === 'name') {
-      setName(event.target.value);
-    }
-    if (field === 'email') {
-      setEmail(event.target.value);
-    }
-    handleErrors({
-      name, email, password, passwordConfirmation,
-    });
-  };
-
-  const onClickHandler = (field) => {
-    if (field === 'showpassword') {
-      setShow({
-        ...show,
-        password: show.password !== true,
-      });
-    }
-
-    if (field === 'showpasswordconfirm') {
-      setShow({
-        ...show,
-        passwordConfirmation: show.passwordConfirmation !== true,
-      });
-    }
-  };
-
-  const onBlurHandler = (field) => {
-    touched[field] = true;
-    setTouched(touched);
-    handleErrors({
-      name, email, password, passwordConfirmation,
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setName('');
-    setEmail('');
-    setPassword('');
-    setPasswordConfirmation('');
-    setOpen(false);
-    AddSnack({ message: 'Trainee Added Successefully', status: 'success' });
-    console.log('trainee Added');
-  };
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log({
-      name, email, password, passwordConfirmation,
-    });
-  });
-
+const AddDialog = (props) => {
+  const {
+    error,
+    open,
+    touched,
+    handleClickOpen,
+    handleClose,
+    onChangeHandler,
+    onClickHandler,
+    onBlurHandler,
+    handleSubmit,
+    name,
+    email,
+    password,
+    passwordConfirmation,
+    show,
+  } = props;
   return (
     <div>
       <Button
@@ -156,6 +56,7 @@ const AddDialog = () => {
               }}
               id="outlined-basic"
               fullWidth
+              value={name}
               required
               label="Name"
               variant="outlined"
@@ -164,8 +65,6 @@ const AddDialog = () => {
               helperText={getError(touched, error, 'name')}
               error={touched.name && getError(touched, error, 'name') !== ''}
             />
-            {/* <Icon baseClassName="material-icons-two-tone">add_circle</Icon> */}
-            {/* <PersonIcon /> */}
             <br />
             <br />
             <TextField
@@ -243,4 +142,21 @@ const AddDialog = () => {
   );
 };
 
+AddDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  error: PropTypes.arrayOf.isRequired,
+  touched: PropTypes.arrayOf.isRequired,
+  handleClickOpen: PropTypes.func.isRequired,
+  onChangeHandler: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  onBlurHandler: PropTypes.func.isRequired,
+  onClickHandler: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  passwordConfirmation: PropTypes.string.isRequired,
+  show: PropTypes.objectOf.isRequired,
+
+};
 export default AddDialog;

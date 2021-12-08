@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+/* eslint-disable no-underscore-dangle */import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DataTable } from '../../components';
+import * as Yup from 'yup';
+import { DataTable, withLoaderAndMessage } from '../../components';
 import { getDateFormatted } from '../../lib/utils/helper';
 import { AddDialog } from './components';
 import trainees from './data/trainee';
 import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
-import SnackBarContext from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { SnackBarContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { callAllApi } from '../../lib/utils/api';
+
+const schema = Yup.object({
+  name: Yup.string().min(3).max(10).label('Name')
+    .required(),
+  email: Yup.string().email().required().label('Email'),
+  password: Yup.string().matches(
+    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+    'Password must contain at least 8 characters, one uppercase, one number and one special case character',
+  ).required('Password is required'),
+  passwordConfirmation: Yup.string().required('Password Confirmation is required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
+});
 
 const Trainee = () => {
   const [order, setOrder] = useState('asc');
@@ -17,14 +30,128 @@ const Trainee = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2);
+  const [loader, setLoader] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const [traineeValues, setTraineeValues] = useState({
     id: '',
     name: '',
     email: '',
     createdAt: '',
   });
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState([]);
+  const [touched, setTouched] = useState([]);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [show, setShow] = useState({
+    password: false,
+    passwordConfirmation: false,
+  });
+
   const openSnackBar = React.useContext(SnackBarContext);
+  const handleErrors = (formValues) => {
+    const {
+      name: newName,
+      email: newEmail,
+      password: newPassword,
+      passwordConfirmation: newPasswordConfirmation,
+    } = formValues;
+    schema.validate({
+      name: newName,
+      email: newEmail,
+      password: newPassword,
+      passwordConfirmation: newPasswordConfirmation,
+    }, { abortEarly: false }).then(() => {
+      setError({});
+    }).catch((errors) => {
+      const schemaErrors = {};
+      if (errors) {
+        errors.inner.forEach((err) => { schemaErrors[err.path] = err.message; });
+        setError(schemaErrors);
+      }
+    });
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onChangeHandler = (field, event) => {
+    if (field === 'password') {
+      setPassword(event.target.value);
+    }
+    if (field === 'passwordConfirmation') {
+      setPasswordConfirmation(event.target.value);
+    }
+    if (field === 'name') {
+      setName(event.target.value);
+    }
+    if (field === 'email') {
+      setEmail(event.target.value);
+    }
+    handleErrors({
+      name, email, password, passwordConfirmation,
+    });
+  };
+
+  const onClickHandler = (field) => {
+    if (field === 'showpassword') {
+      setShow({
+        ...show,
+        password: show.password !== true,
+      });
+    }
+
+    if (field === 'showpasswordconfirm') {
+      setShow({
+        ...show,
+        passwordConfirmation: show.passwordConfirmation !== true,
+      });
+    }
+  };
+
+  const onBlurHandler = (field) => {
+    touched[field] = true;
+    setTouched(touched);
+    handleErrors({
+      name, email, password, passwordConfirmation,
+    });
+  };
+
+  const fetchTrainee = async () => {
+    const result = await callAllApi('user', 'GET', { sort: { createdAt: '-1' } });
+    setLoader(false);
+    if (result) {
+      setAllTrainees(result.data[0].result);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = {
+      role: 'trainee',
+      name,
+      email,
+      password,
+    };
+    const result = await callAllApi('user', 'post', data);
+    if (result) {
+      setName('');
+      setEmail('');
+      setPassword('');
+      setPasswordConfirmation('');
+      setOpen(false);
+      fetchTrainee();
+      openSnackBar('Trainee Added Successefully', 'success');
+    }
+  };
+
   const handleSort = (field) => {
     let sortedItems = [];
     if (order === 'asc') {
@@ -55,7 +182,7 @@ const Trainee = () => {
     setTraineeValues({
       name: data.name,
       email: data.email,
-      id: data.id,
+      id: data._id,
     });
   };
 
@@ -65,7 +192,7 @@ const Trainee = () => {
     setTraineeValues({
       name: data.name,
       email: data.email,
-      id: data.id,
+      id: data._id,
     });
   };
 
@@ -83,7 +210,7 @@ const Trainee = () => {
     });
   };
 
-  const handleOnEditSubmit = (event) => {
+  const handleOnEditSubmit = async (event) => {
     event.preventDefault();
     setTraineeValues({
       ...traineeValues,
@@ -96,7 +223,7 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
-    openSnackBar('This is success message', 'success');
+    openSnackBar('Trainee Editted Succesfully', 'success');
   };
 
   const handleOnRemoveClose = () => {
@@ -111,37 +238,55 @@ const Trainee = () => {
   const handleOnRemoveSubmit = (event) => {
     event.preventDefault();
     setOpenRemoveDialog(false);
-    // openSnackBar('This is success message', 'success');
-    // console.log('Deleted Item', alltrainees.find((trainee) => trainee.id === event.target.id));
-    const data = alltrainees.find((trainee) => trainee.id === event.target.id);
-    const fixdate = new Date('2019-02-14');
-    const date = new Date(data.createdAt);
-    console.log('fixdate.getTime() < date.getTime()', fixdate.getTime(), date.getTime());
-    if (fixdate.getTime() < date.getTime()) {
-      openSnackBar({ message: 'This is success message', status: 'success' });
-    } else {
-      openSnackBar({ message: 'This is error message', status: 'error' });
-    }
+    openSnackBar('Trainee Deleted Succesfully', 'success');
+    console.log('Deleted Item', alltrainees.find((trainee) => trainee.originalId === event.target.id));
   };
+
+  useEffect(() => {
+    console.log({
+      name, email, password, passwordConfirmation,
+    });
+    setLoader(true);
+    fetchTrainee();
+  }, []);
+
+  const EnhancedDataTable = withLoaderAndMessage(DataTable);
 
   return (
     <div>
-      <AddDialog />
-      <DataTable
+      <AddDialog
+        error={error}
+        touched={touched}
+        open={open}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        onChangeHandler={onChangeHandler}
+        onClickHandler={onClickHandler}
+        onBlurHandler={onBlurHandler}
+        handleSubmit={handleSubmit}
+        name={name}
+        email={email}
+        password={password}
+        passwordConfirmation={passwordConfirmation}
+        show={show}
+      />
+      <EnhancedDataTable
         trainees={alltrainees}
         id="data_table_id"
+        loader={loader}
+        dataLength={alltrainees.length}
         columns={[
           {
             field: 'name',
             label: 'Name',
             align: 'left',
-            format: (value) => value.toLowerCase(),
+            format: (value) => value,
           },
           {
             field: 'email',
             label: 'Email',
             align: 'left',
-            format: (value) => value.toUpperCase(),
+            format: (value) => value,
           },
           {
             field: 'createdAt',
@@ -163,7 +308,7 @@ const Trainee = () => {
             handler: handleRemoveDialogOpen,
           },
         ]}
-        count={trainees.length}
+        count={alltrainees.length}
         page={page}
         rowsPerPage={rowsPerPage}
         onChangePage={handlePageChange}

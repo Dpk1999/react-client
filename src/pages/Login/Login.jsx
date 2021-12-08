@@ -52,18 +52,13 @@ const Login = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    const loginCredential = {
-      email,
-      password,
-    };
-    const result = await callAllApi('/user/createToken', 'POST', loginCredential);
-    // if (result.data.status === 'success') {
-    if (result) {
+    const result = await callAllApi('user/createToken', 'POST', { email, password });
+    console.log('result', result);
+    try {
       setLoading(false);
-      localStorage.setItem('token', result.data.token);
       openSnackBar('Successfully Login', 'success');
       history.push('/trainee');
-    } else {
+    } catch {
       setLoading(false);
       openSnackBar('Authrization Failed', 'error');
     }

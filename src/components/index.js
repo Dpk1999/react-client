@@ -6,3 +6,4 @@ export { default as RadioGroup } from './RadioGroup';
 export { default as Button } from './Button';
 export { default as Math } from './Math';
 export { default as DataTable } from './Table';
+export { default as withLoaderAndMessage } from './HOC';

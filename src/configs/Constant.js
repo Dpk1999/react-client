@@ -12,6 +12,7 @@ export const ALL_ROUNDER = 'All Rounder';
 export const DEFENDER = 'Defender';
 export const STRIKER = 'Striker';
 export const DEFAULT_SELECT = 'select';
+export const BASE_URL = 'http://localhost:8080/api/';
 export const SELECT_OPTIONS = [
   {
     value: CRICKET_VALUE,
