@@ -9,30 +9,35 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
+import { useMutation } from '@apollo/client';
 import { cardStyle } from './style';
-import { callAllApi } from '../../lib/utils/api';
 import { getError, hasErrors, isTouched } from '../../lib/utils/helper';
 import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { LOGIN_USER } from './mutation';
 
 const schema = Yup.object({
   email: Yup.string().email().required().label('Email'),
   password: Yup.string().required('Password is required'),
 });
-
 const Login = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  const openSnackBar = React.useContext(SnackContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState([]);
   const [touched, setTouched] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
-  const openSnackBar = React.useContext(SnackContext);
+  // eslint-disable-next-line no-unused-vars
+  const [loginUser, { data, _loading, _error }] = useMutation(LOGIN_USER, {
+    onCompleted: (result) => {
+      localStorage.setItem('token', result.loginUser.data.token);
+    },
+  });
   const handleError = (formValues) => {
     const {
       email: newEmail, password: newPassword,
     } = formValues;
-
     schema.validate({
       email: newEmail, password: newPassword,
     }, { abortEarly: false }).then(() => {
@@ -48,16 +53,15 @@ const Login = () => {
   const spinner = {
     marginLeft: '5px',
   };
-
   const handleLogin = async () => {
     setLoading(true);
-    const result = await callAllApi('user/createToken', 'POST', { email, password });
-    if (result) {
+    await loginUser({ variables: { email, password } });
+    // const result = await callAllApi('user/createToken', 'POST', { email, password });
+    try {
       setLoading(false);
       openSnackBar({ message: 'Successfully Login', status: 'success' });
-      localStorage.setItem('token', result.data.token);
       history.push('/trainee');
-    } else {
+    } catch (e) {
       setLoading(false);
       openSnackBar({ message: 'Authrization Failed', status: 'error' });
     }
@@ -65,7 +69,6 @@ const Login = () => {
   const onClickHandler = () => {
     setShowPassword(showPassword !== true);
   };
-
   const onBlurHandler = (field) => {
     touched[field] = true;
     setTouched(touched);
@@ -73,7 +76,6 @@ const Login = () => {
       email, password,
     });
   };
-
   const onChangeHandler = (field, event) => {
     if (field === 'email') {
       setEmail(event.target.value);
@@ -87,11 +89,9 @@ const Login = () => {
       email, password,
     });
   };
-
   useEffect(() => {
     console.log({ email, password });
   });
-
   return (
     <div style={{
       display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '90px',
@@ -159,5 +159,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
