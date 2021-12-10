@@ -21,7 +21,7 @@ const schema = Yup.object({
 
 const EditDialog = (props) => {
   const {
-    open, onClose, handleSubmit, traineeValues,
+    open, onClose, onSubmit, traineeValues,
   } = props;
   const [error, setError] = useState([]);
   const [touched, setTouched] = useState([]);
@@ -71,7 +71,7 @@ const EditDialog = (props) => {
     <div>
       <Dialog maxWidth="md" open={open} onClose={onClose}>
         <DialogTitle>Edit Trainee</DialogTitle>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <DialogContent>
             <DialogContentText>
               Enter your trainee details
@@ -117,6 +117,7 @@ const EditDialog = (props) => {
               type="submit"
               disabled={hasErrors(error) || !isTouched(touched)}
               id={traineeValues.id}
+              originalID={traineeValues.originalID}
             >
               Submit
             </Button>
@@ -130,7 +131,7 @@ const EditDialog = (props) => {
 EditDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   traineeValues: PropTypes.objectOf.isRequired,
 };
 

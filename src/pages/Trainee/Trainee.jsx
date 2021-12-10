@@ -45,6 +45,7 @@ const Trainee = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const AddSnack = React.useContext(SnackContext);
   const [show, setShow] = useState({
     password: false,
     passwordConfirmation: false,
@@ -140,7 +141,7 @@ const Trainee = () => {
       email,
       password,
     };
-    const result = await callAllApi('user', 'post', data);
+    const result = await callAllApi('user', 'POST', data);
     if (result) {
       setName('');
       setEmail('');
@@ -177,12 +178,13 @@ const Trainee = () => {
     setPage(newPage);
   };
 
-  const handleEditDialogOpen = (data) => {
+  const handleEditDialogOpen = async (data) => {
     setOpenEditDialog(true);
     setTraineeValues({
       name: data.name,
       email: data.email,
       id: data._id,
+      originalId: data.originalId,
     });
   };
 
@@ -193,6 +195,7 @@ const Trainee = () => {
       name: data.name,
       email: data.email,
       id: data._id,
+      originalId: data.originalId,
     });
   };
 
@@ -223,7 +226,9 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
-    openSnackBar({ message: 'Trainee Editted Succesfully', status: 'success' });
+    await callAllApi(`user/${traineeValues.originalId}`, 'PUT', { name: event.target.name.value, email: event.target.email.value });
+    fetchTrainee();
+    openSnackBar({ message: 'Trainee Edited Succesfully', status: 'success' });
   };
 
   const handleOnRemoveClose = () => {
@@ -232,14 +237,22 @@ const Trainee = () => {
       name: '',
       email: '',
       id: '',
+      originalId: '',
     });
   };
 
-  const handleOnRemoveSubmit = (event) => {
-    event.preventDefault();
+  const handleOnRemoveSubmit = async (event) => {
     setOpenRemoveDialog(false);
-    openSnackBar({ message: 'Trainee Deleted Succesfully', status: 'success' });
-    console.log('Deleted Item', alltrainees.find((trainee) => trainee.originalId === event.target.id));
+    const data = alltrainees.find((trainee) => trainee._id === event.target.id);
+    const fixdate = new Date('2019-02-14');
+    const date = new Date(data.createdAt);
+    if (fixdate.getTime() < date.getTime()) {
+      await callAllApi(`user/${event.target.id}`, 'DELETE');
+      fetchTrainee();
+      AddSnack({ message: 'Trainee Deleted Successefully', status: 'success' });
+    } else {
+      AddSnack({ message: 'Error Message', status: 'error' });
+    }
   };
 
   useEffect(() => {

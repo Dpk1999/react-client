@@ -61,6 +61,7 @@ const DataTable = (props) => {
             ).map((row) => (
               <StyledTableRow
                 id={row.id}
+                originalId={row.originalId}
               >
                 {
                   columns.map((data) => (

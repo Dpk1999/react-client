@@ -7,7 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import EmailIcon from '@mui/icons-material/Email';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-// import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
 import { cardStyle } from './style';
 import { callAllApi } from '../../lib/utils/api';
@@ -44,6 +44,9 @@ const Login = () => {
         setError(schemaErrors);
       }
     });
+  };
+  const spinner = {
+    marginLeft: '5px',
   };
 
   const handleLogin = async () => {
@@ -146,6 +149,10 @@ const Login = () => {
             onClick={handleLogin}
           >
             Sign In
+            {loading && (
+              // eslint-disable-next-line react/jsx-no-undef
+              <CircularProgress size={20} style={spinner} />
+            )}
           </Button>
         </CardContent>
       </Card>
