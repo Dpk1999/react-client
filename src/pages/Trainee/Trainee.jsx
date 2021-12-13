@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
+import { useLazyQuery } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as Yup from 'yup';
 import { DataTable, withLoaderAndMessage } from '../../components';
@@ -11,6 +12,7 @@ import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
 import { callAllApi } from '../../lib/utils/api';
 import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
+import { GET_TRAINEES } from './query';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -24,6 +26,7 @@ const schema = Yup.object({
 });
 
 const Trainee = () => {
+  const [getAllTrainees] = useLazyQuery(GET_TRAINEES);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [alltrainees, setAllTrainees] = useState(trainees);
@@ -126,10 +129,11 @@ const Trainee = () => {
   };
 
   const fetchTrainee = async () => {
-    const result = await callAllApi('user', 'GET', { sort: { createdAt: '-1' } });
+    const { data } = await getAllTrainees({ variables: { skip: rowsPerPage * page, limit: 20 } });
+    const { result } = data.getAllTrainees.data[0];
     setLoader(false);
     if (result) {
-      setAllTrainees(result.data[0].result);
+      setAllTrainees(result);
     }
   };
 

@@ -1,15 +1,13 @@
-import { InMemoryCache } from 'apollo-boost';
-import ApolloClient from 'apollo-client';
-import { split } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
+import {
+  ApolloClient, HttpLink, split, InMemoryCache, ApolloLink, concat,
+} from '@apollo/client';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 
-console.log('REACT_APP_APOLLO_GRAPHQL_URI', process.env.REACT_APP_APOLLO_GRAPHQL_URI);
 // Create an http link:
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_APOLLO_GRAPHQL_URI,
+  credentials: 'same-origin',
 });
 
 // Create a WebSocket link:
@@ -20,16 +18,14 @@ const wsLink = new WebSocketLink({
   },
 });
 
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
-  // return the headers to the context so httpLink can read them
-  return {
+const authLink = new ApolloLink((operation, forward) => {
+  operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: token,
+      Authorization: localStorage.getItem('token'),
     },
-  };
+  }));
+  return forward(operation);
 });
 
 // using the ability to split links, you can send data to each link
@@ -40,29 +36,27 @@ const link = split(
     const definition = getMainDefinition(query);
     return (
       definition.kind === 'OperationDefinition'
-      && definition.operation === 'subscription'
+          && definition.operation === 'subscription'
     );
   },
   wsLink,
   httpLink,
 );
 
-const cache = new InMemoryCache();
-
-const setHeaders = (operation) => operation.setContext({ headers: { authorization: localStorage.getItem('token') } });
+/* const setHeaders = (opersation) =>
+    operation.setContext({ headers: { authorization: localStorage.getItem('Token') } }); */
 
 const client = new ApolloClient({
-  link: authLink.concat(link),
-  cache,
-  request: setHeaders,
+  link: concat(authLink, link),
+  cache: new InMemoryCache(),
 });
 
 const initialState = {
   token: '',
 };
 
-cache.writeData({ data: initialState });
+client.cache.modify({ data: initialState });
 
-client.onResetStore(() => cache.writeData({ data: initialState }));
+client.onResetStore(() => client.cache.modify({ data: initialState }));
 
 export default client;
