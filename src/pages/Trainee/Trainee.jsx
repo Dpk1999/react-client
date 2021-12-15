@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as Yup from 'yup';
 import { DataTable, withLoaderAndMessage } from '../../components';
@@ -10,9 +10,10 @@ import trainees from './data/trainee';
 import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
-import { callAllApi } from '../../lib/utils/api';
 import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
-import { GET_TRAINEES } from './query';
+// import { callApi } from '../../lib/utils/api';
+import { GET_ALL_USERS } from './query';
+import { CREATE_USER, DELETE_USER, UPDATE_USER } from './mutation';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -26,7 +27,7 @@ const schema = Yup.object({
 });
 
 const Trainee = () => {
-  const [getAllTrainees] = useLazyQuery(GET_TRAINEES);
+  // const [getAllTrainees] = useLazyQuery(GET_TRAINEES);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('name');
   const [alltrainees, setAllTrainees] = useState(trainees);
@@ -53,8 +54,31 @@ const Trainee = () => {
     password: false,
     passwordConfirmation: false,
   });
+  const [loaderAddTrainee, setLoaderAddTrainee] = useState(false);
+  const [loaderEditTrainee, setLoaderEditTrainee] = useState(false);
+  const [getAllTrainees] = useLazyQuery(GET_ALL_USERS, {
+    variables: { skip: 0, limit: 10 },
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const openSnackBar = React.useContext(SnackContext);
+  const [createUsers] = useMutation(
+    CREATE_USER,
+    {
+      variables: {
+        name, email, role: 'trainee', password,
+      },
+      refetchQueries: [GET_ALL_USERS, 'GetAllTrainees'],
+    },
+  );
+
+  const [updateUser] = useMutation(UPDATE_USER, {
+    refetchQueries: [GET_ALL_USERS, 'GetAllTrainees'],
+  });
+
+  const [deleteUser] = useMutation(DELETE_USER, {
+    refetchQueries: [GET_ALL_USERS, 'GetAllTrainees'],
+  });
+
   const handleErrors = (formValues) => {
     const {
       name: newName,
@@ -129,31 +153,36 @@ const Trainee = () => {
   };
 
   const fetchTrainee = async () => {
-    const { data } = await getAllTrainees({ variables: { skip: rowsPerPage * page, limit: 20 } });
-    const { result } = data.getAllTrainees.data[0];
-    setLoader(false);
-    if (result) {
-      setAllTrainees(result);
-    }
+    await getAllTrainees({
+      onCompleted: (data) => {
+        console.log('data---> ', data);
+        const { getAllTrainees: TraineesData } = data;
+        setLoader(false);
+        console.log('DATA----> ', TraineesData);
+        if (TraineesData) {
+          setAllTrainees(TraineesData.data[0].result);
+        } else {
+          setAllTrainees({});
+        }
+      },
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      role: 'trainee',
-      name,
-      email,
-      password,
-    };
-    const result = await callAllApi('user', 'POST', data);
-    if (result) {
+    setLoaderAddTrainee(true);
+    await createUsers();
+    try {
+      setLoaderAddTrainee(false);
       setName('');
       setEmail('');
       setPassword('');
       setPasswordConfirmation('');
       setOpen(false);
-      fetchTrainee();
-      openSnackBar({ message: 'Trainee Added Successefully', status: 'success' });
+      // fetchTrainee();
+      AddSnack({ message: 'Trainee Added Successefully', status: 'success' });
+    } catch (err) {
+      AddSnack({ message: 'Trainee Added Failed', status: 'error' });
     }
   };
 
@@ -184,6 +213,7 @@ const Trainee = () => {
 
   const handleEditDialogOpen = async (data) => {
     setOpenEditDialog(true);
+    console.log('data.originalId', data.originalId);
     setTraineeValues({
       name: data.name,
       email: data.email,
@@ -230,9 +260,21 @@ const Trainee = () => {
       name: event.target.name.value,
       email: event.target.email.value,
     });
-    await callAllApi(`user/${traineeValues.originalId}`, 'PUT', { name: event.target.name.value, email: event.target.email.value });
-    fetchTrainee();
-    openSnackBar({ message: 'Trainee Edited Succesfully', status: 'success' });
+    console.log(traineeValues.originalId, event.target.name.value, event.target.email.value);
+    await updateUser({
+      variables: {
+        originalId: traineeValues.originalId,
+        name: event.target.name.value,
+        email: event.target.email.value,
+      },
+    });
+    setLoaderEditTrainee(true);
+    setTimeout(() => {
+      setLoaderEditTrainee(false);
+      fetchTrainee();
+      AddSnack({ message: 'Trainee Edited Successefully', status: 'success' });
+      setOpenEditDialog(false);
+    }, 2000);
   };
 
   const handleOnRemoveClose = () => {
@@ -251,8 +293,11 @@ const Trainee = () => {
     const fixdate = new Date('2019-02-14');
     const date = new Date(data.createdAt);
     if (fixdate.getTime() < date.getTime()) {
-      await callAllApi(`user/${event.target.id}`, 'DELETE');
-      fetchTrainee();
+      await deleteUser({
+        variables: {
+          id: event.target.id,
+        },
+      });
       AddSnack({ message: 'Trainee Deleted Successefully', status: 'success' });
     } else {
       AddSnack({ message: 'Error Message', status: 'error' });
@@ -286,6 +331,7 @@ const Trainee = () => {
         password={password}
         passwordConfirmation={passwordConfirmation}
         show={show}
+        loaderAddTrainee={loaderAddTrainee}
       />
       <EnhancedDataTable
         trainees={alltrainees}
@@ -336,6 +382,8 @@ const Trainee = () => {
           open={openEditDialog}
           traineeValues={traineeValues}
           onClose={handleOnEditClose}
+          handleSubmit={(event) => handleOnEditSubmit(event)}
+          loaderEditTrainee={loaderEditTrainee}
           onSubmit={(event) => handleOnEditSubmit(event)}
         />
       )}
@@ -344,6 +392,7 @@ const Trainee = () => {
           open={openRemoveDialog}
           onClose={handleOnRemoveClose}
           id={traineeValues.id}
+          originalId={traineeValues.originalId}
           handleSubmit={(event) => handleOnRemoveSubmit(event)}
         />
       )}

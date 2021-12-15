@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_TRAINEES = gql`
+const GET_ALL_USERS = gql`
   query getAllTrainees($limit: Int, $skip: Int) {
     getAllTrainees(limit: $limit, skip: $skip) {
         message
@@ -13,10 +13,11 @@ const GET_TRAINEES = gql`
             email
             role
             password
+            createdAt
       }
     }
     }
   }
 `;
 
-export { GET_TRAINEES };
+export { GET_ALL_USERS };
