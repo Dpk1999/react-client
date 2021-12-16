@@ -11,9 +11,9 @@ import TraineeList from './TraineeList';
 import EditDialog from './components/EditDialog';
 import RemoveDialog from './components/RemoveDialog';
 import { SnackContext } from '../../contexts/SnackBarProvider/SnackBarProvider';
-// import { callApi } from '../../lib/utils/api';
 import { GET_ALL_USERS } from './query';
 import { CREATE_USER, DELETE_USER, UPDATE_USER } from './mutation';
+import { DELETE_TRAINEE_SUB, UPDATE_TRAINEE_SUB } from './subscription';
 
 const schema = Yup.object({
   name: Yup.string().min(3).max(10).label('Name')
@@ -56,7 +56,7 @@ const Trainee = () => {
   });
   const [loaderAddTrainee, setLoaderAddTrainee] = useState(false);
   const [loaderEditTrainee, setLoaderEditTrainee] = useState(false);
-  const [getAllTrainees] = useLazyQuery(GET_ALL_USERS, {
+  const [getAllTrainees, { subscribeToMore }] = useLazyQuery(GET_ALL_USERS, {
     variables: { skip: 0, limit: 10 },
     fetchPolicy: 'cache-and-network',
   });
@@ -303,6 +303,49 @@ const Trainee = () => {
       AddSnack({ message: 'Error Message', status: 'error' });
     }
   };
+  useEffect(() => {
+    subscribeToMore({
+      document: UPDATE_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        // const { getAllTrainees: userData } = prev;
+        const userData = prev.getAllTrainees.data[0].result;
+        const result = subscriptionData.data.userUpdated;
+        const updatedRecord = userData.map((record) => {
+          if (record.originalId === result.originalId) {
+            return {
+              ...record,
+              ...result,
+            };
+          }
+          return record;
+        });
+        return {
+          getAllTrainees: {
+            ...userData,
+            ...updatedRecord,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: DELETE_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const userData = prev.getAllTrainees.data[0].result;
+        const result = subscriptionData.data.userDeleted;
+        const deletedRecord = userData.filter(
+          (record) => record.originalId !== result.originalId,
+        );
+        return {
+          getAllTrainees: {
+            ...userData,
+            ...deletedRecord,
+          },
+        };
+      },
+    });
+  }, []);
 
   useEffect(() => {
     console.log({

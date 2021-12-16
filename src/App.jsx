@@ -7,7 +7,7 @@ import {
 } from './pages';
 import AuthRoute from './routes/AuthRoute';
 import { PrivateRoute } from './routes';
-import TraineeDetail from './pages/Trainee';
+import TraineeDetail from './pages/Trainee/TraineeDetail';
 import SnackBarProvider from './contexts/SnackBarProvider';
 import apolloClient from './lib/apollo-client';
 
